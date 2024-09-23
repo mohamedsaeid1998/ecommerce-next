@@ -17,7 +17,6 @@ import CartModal from "./CartModal";
 interface IProps {}
 
 const NavIcons = ({}: IProps) => {
-  //@ts-nocheck
   const [open, setOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const isLoggedIn = true;
@@ -26,7 +25,7 @@ const NavIcons = ({}: IProps) => {
       <div className="flex items-center space-x-4 xl:space-x-6 relative">
         {/* USER */}
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild onClick={() => setOpen(!open)}>
             {open ? (
               <Avatar className="cursor-pointer">
                 <AvatarImage

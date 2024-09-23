@@ -18,14 +18,12 @@ const AddProduct = ({
       ? setQuantity((prev) => prev + 1)
       : null;
   };
-  const calcQuantity = () => {
+
+  useEffect(() => {
     if (quantity > stockNumber) {
       setQuantity(1);
     }
-  };
-  useEffect(() => {
-    calcQuantity();
-  }, [stockNumber,calcQuantity]);
+  }, [stockNumber]);
 
   return (
     <>
