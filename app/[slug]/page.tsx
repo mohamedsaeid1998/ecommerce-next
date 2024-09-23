@@ -1,3 +1,4 @@
+
 import { getProductDetails } from "@/actions/products.actions";
 import AddProduct from "@/components/AddProduct";
 import CustomizeProducts from "@/components/CustomizeProducts";
@@ -55,11 +56,15 @@ const SinglePage = async ({ params }: IProps) => {
               productOptions={product.productOptions}
             />
           ) : (
-            <AddProduct productId={product._id!} variantId="00000000-0000-0000-0000-000000000000" stockNumber= {product.stock?.quantity || 0} />
+            <AddProduct
+              productId={product._id!}
+              variantId="00000000-0000-0000-0000-000000000000"
+              stockNumber={product.stock?.quantity || 0}
+            />
           )}
 
           <div className="h-[2px] bg-gray-100" />
-          {product.additionalInfoSections?.map((section: any) => (
+          {product.additionalInfoSections?.map((section) => (
             <div className="text-sm" key={section.title}>
               <h4 className="font-medium mb-4">{section.title}</h4>
               <p>{section.description}</p>

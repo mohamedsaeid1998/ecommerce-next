@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 import { LogOut, UserPen } from "lucide-react";
 
@@ -16,6 +17,7 @@ import CartModal from "./CartModal";
 interface IProps {}
 
 const NavIcons = ({}: IProps) => {
+  //@ts-nocheck
   const [open, setOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const isLoggedIn = true;

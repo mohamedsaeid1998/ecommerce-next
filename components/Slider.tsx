@@ -1,11 +1,11 @@
 "use client";
 
-import { ISlider } from "@/interfaces";
-import Link from "next/link";
-import { Button } from "./ui/button";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 import { SLIDES } from "@/constants";
+import { ISlider } from "@/interfaces";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { Button } from "./ui/button";
 
 const Slider = () => {
   const [current, setCurrent] = useState(0);

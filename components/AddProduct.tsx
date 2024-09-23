@@ -1,9 +1,15 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 
 import { IAddToCart } from "@/interfaces";
 import { useEffect, useState } from "react";
+//@ts-ignore
+const AddProduct = ({
+  // productId,
+  //  variantId,
 
-const AddProduct = ({ productId, variantId, stockNumber }: IAddToCart) => {
+  stockNumber,
+}: IAddToCart) => {
   const [quantity, setQuantity] = useState(1);
 
   const handelQuantity = (type: "d" | "i") => {
