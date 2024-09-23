@@ -25,7 +25,7 @@ const AddProduct = ({
   };
   useEffect(() => {
     calcQuantity();
-  }, [stockNumber]);
+  }, [stockNumber,calcQuantity]);
 
   return (
     <>
