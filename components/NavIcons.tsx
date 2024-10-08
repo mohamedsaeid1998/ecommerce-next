@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
+import Cookies from "js-cookie";
 import { LogOut, UserPen } from "lucide-react";
 
 import {
@@ -8,26 +9,55 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useWixClient } from "@/hooks/useWixClient";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import CartModal from "./CartModal";
-
+import { usePathname } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 interface IProps {}
 
 const NavIcons = ({}: IProps) => {
   const [open, setOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const isLoggedIn = true;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+  const wixClient = useWixClient();
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const loggedIn = wixClient.auth.loggedIn();
+      setIsLoggedIn(loggedIn);
+    };
+    checkLoginStatus();
+  }, [isHomePage, wixClient.auth]);
+
+  const handleProfile = () => {
+    if (!isLoggedIn) {
+      router.push("/login");
+    } else {
+      setOpen((prev) => !prev);
+    }
+  };
+
+  const handleLogout = async () => {
+    const { logoutUrl } = await wixClient.auth.logout(window.location.href);
+    Cookies.remove("refreshToken");
+    router.push(logoutUrl);
+  };
+
   return (
     <>
       <div className="flex items-center space-x-4 xl:space-x-6 relative">
         {/* USER */}
         <DropdownMenu>
-          <DropdownMenuTrigger asChild onClick={() => setOpen(!open)}>
-            {open ? (
-              <Avatar className="cursor-pointer">
+          <DropdownMenuTrigger asChild>
+            {isLoggedIn ? (
+              <Avatar className="cursor-pointer" onClick={handleProfile}>
                 <AvatarImage
                   src="https://github.com/shadcn.png"
                   alt="@shadcn"
@@ -41,24 +71,33 @@ const NavIcons = ({}: IProps) => {
                 alt="profile"
                 width={22}
                 height={22}
+                onClick={handleProfile}
               />
             )}
+
+            {/* <Image
+              className="cursor-pointer"
+              src="/profile.png"
+              alt="profile"
+              width={22}
+              height={22}
+              onClick={handleProfile} */}
+            {/* /> */}
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-28">
-            {isLoggedIn && (
+          {open && (
+            <DropdownMenuContent className="w-28">
               <Link href="/">
                 <DropdownMenuItem>
                   <UserPen className="mr-2 size-4" />
                   <span>Profile</span>
                 </DropdownMenuItem>
               </Link>
-            )}
-
-            <DropdownMenuItem>
-              <LogOut className="mr-2 size-4" />
-              <span>Log out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2 size-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          )}
         </DropdownMenu>
         {/* NOTIFICATION */}
         <Image
